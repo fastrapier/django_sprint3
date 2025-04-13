@@ -6,7 +6,8 @@ from .models import Category, Post
 def index(request):
     current_time = timezone.now()
 
-    post_list = Post.objects.filter(is_published=True, category__is_published=True, pub_date__lt=current_time).order_by('-created_at')[:5]
+    post_list = Post.objects.filter(is_published=True, category__is_published=True,
+                                    pub_date__lt=current_time).order_by('-created_at')[:5]
 
     context = {
         'post_list': post_list,
@@ -16,16 +17,19 @@ def index(request):
 
 def post_detail(request, post_id):
     current_time = timezone.now()
-    post = get_object_or_404(Post, id=post_id, is_published=True, category__is_published=True, pub_date__lt=current_time)
+    post = get_object_or_404(Post, id=post_id, is_published=True,
+                             category__is_published=True, pub_date__lt=current_time)
 
     context = {
         'post': post
     }
     return render(request, 'blog/detail.html', context)
 
+
 def category_posts(request, category_slug):
     current_time = timezone.now()
-    category = get_object_or_404(Category, slug=category_slug, is_published=True)
+    category = get_object_or_404(Category, slug=category_slug,
+                                 is_published=True)
 
     post_list = Post.objects.filter(
         category=category,
